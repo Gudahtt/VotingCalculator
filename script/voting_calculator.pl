@@ -21,26 +21,35 @@ use Pod::Usage;
 use FindBin;
 
 use lib "$FindBin::Bin/../lib/";
+use VotingCalculator;
 
 #----------------- Main ------------------#
 
 MAIN: {
-    my ($opt_voting_system, $opt_community, $opt_candidates, $opt_votes)
+    my ($opt_voting_system, $opt_community, $opt_choices, $opt_vote_results)
     my ($opt_help, $opt_man, $opt_version);
 
     GetOptions(
         'system|voting_system:s' => \$opt_voting_system,
         'community:s'            => \$opt_community,
-        'candidates:s'           => \$opt_candidates,
-        'votes:s'                => \$opt_votes,
+        'candidates|choices:s'   => \$opt_choices,
+        'votes|vote_results:s'   => \$opt_vote_results,
         'help|h'                 => \$opt_help,
         'man'                    => \$opt_man,
         'version|v'              => \$opt_version,
-    ) or pod2usage(-verbose => 1) && exit;
+    ) or pod2usage(-verbose => 1) && exit(1);
 
-    pod2usage(-verbose => 1) && exit if defined $opt_help;
-    pod2usage(-verbose => 2) && exit if defined $opt_man;
+    pod2usage(-verbose => 1) && exit(0) if defined $opt_help;
+    pod2usage(-verbose => 2) && exit(0) if defined $opt_man;
     
+    if (! defined $opt_voting_system || ! defined $opt_community || ! defined $opt_choices || ! defined $opt_vote_results) {
+        pod2usage(-verbose => 1) && exit(1);
+    }
+    
+    my $outcome = VotingCalculator->new()->calculate();
+    
+    use Data::Dumper;
+    print Dumper($outcome);
     
     exit(0);
 }
@@ -58,16 +67,16 @@ voting_calculator - CLI for the voting calculator.
 =head1 SYNOPSIS
     
     voting_calculator.pl [--voting_system system] [--community community]
-                    [--candidates candidates] [--votes votes]
+                    [--choices choices] [--votes votes]
                     [--version] [--man] [--help]
 
 
 =head1 DESCRIPTION
 
-This script is used to calculate election results with particular voting
-systems, candidates, communities, and vote distributions. Given the details
+This script is used to calculate vote results with particular voting
+systems, choices, communities, and vote distributions. Given the details
 about which system is used and what votes were cast, this script will output
-the result of the election (i.e. which candidates won/lost, and any other
+the result of the election (i.e. which choice won/lost, and any other
 relevant statistics)
 
 
@@ -79,14 +88,6 @@ relevant statistics)
 =head1 DIAGNOSTICS
 
 #TODO: list errors printed to STDERR/STDOUT
-
-
-=head1 HISTORY
-
-Changelog:
-
-    2013.09.14 v1.0.0
-        - Initial commit
 
 
 =head1 AUTHOR
