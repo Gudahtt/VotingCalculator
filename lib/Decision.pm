@@ -7,7 +7,7 @@
 #############################################################################
 
 package VotingCalculator::Decision;
-use version; our $VERSION = qv("v1.0.0");
+use version; our $VERSION = qv("v1.0.1");
 
 use strict;
 use warnings;
@@ -15,9 +15,12 @@ use diagnostics;
 
 use Moose;
 use namespace::autoclean;
+
 use FindBin;
 
 use lib "$FindBin::Bin/../lib/";
+use VotingCalculator::VotingSystemFactory;
+use VotingCalculator::VotingSystem;
 
 #-------------- Attributes ---------------#
 
@@ -49,6 +52,10 @@ has 'vote_results' => (
 
 sub get_outcome {
     my $self = shift;
+    
+    my $voting_system = VotingCalculator::VotingSystemFactory->create($voting_system)
+    
+    my $outcome = $voting_system->get_outcome();
     
     return;
 }

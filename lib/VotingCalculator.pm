@@ -6,8 +6,8 @@
 #
 #############################################################################
 
-package VotingCalculator
-use version; our $VERSION = qv("v1.0.0");
+package VotingCalculator;
+use version; our $VERSION = qv("v1.0.1");
 
 use strict;
 use warnings;
