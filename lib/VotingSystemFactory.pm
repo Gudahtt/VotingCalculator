@@ -18,9 +18,11 @@ use MooseX::AbstractFactory;
 use FindBin;
 
 use lib "$FindBin::Bin/../lib/";
+use VotingCalculator::VotingSystem;
 
-implementation_does [qw( MyExperience::VotingSystem )];
-implementation_class_via sub { 'MyExperience::VotingSystems::' . shift};
+
+implementation_does [qw( VotingCalculator::VotingSystem )];
+implementation_class_via sub { 'VotingCalculator::VotingSystems::' . shift};
 
 1;
 
