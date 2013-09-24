@@ -55,7 +55,7 @@ sub get_outcome {
     
     my $voting_system = VotingCalculator::VotingSystemFactory->create($voting_system)
     
-    my $outcome = $voting_system->get_outcome();
+    my $outcome = $voting_system->get_outcome($self->community, $self->choices, $self->vote_results);
     
     return;
 }
